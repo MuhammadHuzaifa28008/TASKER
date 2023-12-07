@@ -2,10 +2,14 @@ import { View, Text } from 'react-native'
 import mainStyles from '../../../styles/mainStyles'
 import useNetworkStatus from '../../utils/hooks/useNetworkStatus'
 import AppBarErr from '../errorComponents/AppBarErr'
+import { useEffect } from 'react';
 
 export default function Loader() {
 
     const { isConnected, networkError } = useNetworkStatus();
+    useEffect(()=>{
+
+    },[])
     return (
         <>
             {!isConnected && <AppBarErr message={networkError} />}

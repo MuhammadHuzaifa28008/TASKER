@@ -20,7 +20,7 @@ const TakeText = (props) => {
   useEffect(() => {
     if (defaultText) {
       // Concatenate defaultText to existing text
-      setText((prevText) => prevText + `\n[\n${defaultText}\n]\n`);
+      setText((prevText) => prevText + `___\n${defaultText}\n___`);
     }
   }, [defaultText]);
   useEffect(() => {

@@ -2,6 +2,8 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import useApiCalls from '../hooks/useApiCalls.js'; // Adjust the import path based on your project structure
 import useErrorModal from '../hooks/useErrorModal.js'
+import usePrevMessages from "../hooks/usePrevMessages.js";
+
 
 export const ChatContext = createContext();
 
@@ -12,7 +14,7 @@ export function useChatContext() {
 
 
 export function ChatContextProvider({ children }) {
-
+    const { getLimitedQueue } = usePrevMessages();
     // const { showErrorModal } = useErrorModal();
 
     const {
@@ -42,8 +44,11 @@ export function ChatContextProvider({ children }) {
 
     useEffect(() => {
         const sendReqToServer = async (req, source) => {
+            const prevMessages = getLimitedQueue();
+            // console.log('at context')
+            // console.log(prevMessages)
             try {
-                const response = await sendPrompt(req, source, setOngoingReq, setErr);
+                const response = await sendPrompt(req, prevMessages, source, setOngoingReq, setErr);
                 // console.log(response);
                 if (response) {
                     setRes(response.data.aiResponse);
@@ -52,8 +57,8 @@ export function ChatContextProvider({ children }) {
                     throw new Error('request failed')
                 }
             } catch (error) {
-                console.error('error occoured :' + error)
-
+                // console.error('error occoured :' + error)
+                setErr('Request failed ')
                 setRes('')
             } finally {
                 setActInProg('');
@@ -158,7 +163,7 @@ export function ChatContextProvider({ children }) {
 
 
     return (
-        <ChatContext.Provider value={{ setDiscardReq, actionInProg, setActInProg, img, setImg, imgText, req, setReq, res, err, ongoingReq }}>
+        <ChatContext.Provider value={{setImgText, setDiscardReq, actionInProg, setActInProg, img, setImg, imgText, req, setReq, res, err, ongoingReq }}>
             {children}
         </ChatContext.Provider>
     );

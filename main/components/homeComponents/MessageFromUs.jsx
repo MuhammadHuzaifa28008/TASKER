@@ -5,7 +5,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import chatScreenStyles from '../../../styles/screenStyles/chatScreen.js';
 
 export default function MessageFromUs() {
-    const [message, setMessage] = useState(`We're currently working on exciting new features and improvements.`)
+    const [message, setMessage] = useState(`It may not be the best but it will be.`)
     return (
 
         <View style={[mainStyles.card, { width: '85%', flexDirection: 'row' }]}>
@@ -13,6 +13,7 @@ export default function MessageFromUs() {
                 <FontAwesome name="exclamation" size={24} color={color} />
             </View>
             <Text style={[mainStyles.appBarText, { textAlign: 'left', flex: 1 }]}>{message}</Text>
+            <Text style={[mainStyles.cardHeader, { textAlign: 'left', flex: 1 }]}>Stay Tuned</Text>
         </View>
 
     )

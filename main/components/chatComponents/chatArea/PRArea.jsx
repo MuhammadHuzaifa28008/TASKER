@@ -6,27 +6,28 @@ import usePrevMessages from '../../../utils/hooks/usePrevMessages';
 
 
 export default function PRArea({ setChatStatus, promptTxt, responseTxt }) {
-  const [currentQueue, setCurrentQueue] = useState([]);
+  // const [currentQueue, setCurrentQueue] = useState([]);
   const scrollViewRef = useRef(null);
   const { queue, saveQueueToCache } = usePrevMessages();
 
   useEffect(() => {
-    if (queue.length > 0 && currentQueue.length === 0) {
+    // if (queue.length > 0 && currentQueue.length === 0) {
+    if (queue.length > 0) {
       setChatStatus(true)
-      setCurrentQueue(queue);
+      // setCurrentQueue(queue);
     }
   }, [queue])
   useEffect(() => {
     if (promptTxt) {
-      setCurrentQueue((prevQueue) => [...prevQueue, { role: 'user', content: promptTxt }]);
-      // saveQueueToCache(currentQueue);
+      // setCurrentQueue((prevQueue) => [...prevQueue, { role: 'user', content: promptTxt }]);
+      saveQueueToCache({ role: 'user', content: promptTxt });
     }
   }, [promptTxt]);
 
   useEffect(() => {
     if (responseTxt) {
-      setCurrentQueue((prevQueue) => [...prevQueue, { role: 'assistant', content: responseTxt }]);
-      // saveQueueToCache(currentQueue);
+      // setCurrentQueue((prevQueue) => [...prevQueue, { role: 'assistant', content: responseTxt }]);
+      saveQueueToCache({ role: 'assistant', content: responseTxt });
 
       // Scroll to the end when content changes
       if (scrollViewRef.current) {
@@ -35,9 +36,9 @@ export default function PRArea({ setChatStatus, promptTxt, responseTxt }) {
     }
   }, [responseTxt]);
 
-  useEffect(() => {
-    saveQueueToCache(currentQueue)
-  }, [currentQueue])
+  // useEffect(() => {
+  //   saveQueueToCache(currentQueue)
+  // }, [currentQueue])
 
   return (
     <View style={{ flex: 1, padding: 5 }}>
@@ -48,7 +49,7 @@ export default function PRArea({ setChatStatus, promptTxt, responseTxt }) {
           scrollViewRef.current.scrollToEnd({ animated: true });
         }}
       >
-        {currentQueue.map((item, index) => {
+        {queue.map((item, index) => {
           if (item.role === 'user') {
             return <DisplayReq key={index} reqData={item.content} />;
           }

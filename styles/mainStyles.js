@@ -1,5 +1,7 @@
 import { StyleSheet } from "react-native";
 import theme from "./theme.js";
+import { useFonts } from "expo-font";
+import Bord from "../assets/font/Bord.otf";
 
 const colors = theme.colors;
 const headings = theme.typography;

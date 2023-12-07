@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     textAlign: 'center',
     color: errText,
+    paddingVertical: 10
   },
   button: {
     backgroundColor: bg,

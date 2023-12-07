@@ -45,16 +45,36 @@ const usePrevMessages = () => {
   //       console.error("Error saving chat queue to cache:", error);
   //     }
   //   };
-  const saveQueueToCache = async (newQueue) => {
+  //   const saveQueueToCache = async (newQueue) => {
+  //     try {
+  //       // Get the existing queue from AsyncStorage
+  //       const existingQueue = await AsyncStorage.getItem("chatQueue");
+  //       const parsedExistingQueue = existingQueue
+  //         ? JSON.parse(existingQueue)
+  //         : [];
+
+  //       // Combine the newQueue and existingQueue, and filter out duplicates
+  //       const updatedQueue = [...new Set([...parsedExistingQueue, ...newQueue])];
+
+  //       // Save the updated queue to AsyncStorage
+  //       await AsyncStorage.setItem("chatQueue", JSON.stringify(updatedQueue));
+
+  //       // Update the state with the updated queue
+  //       setQueue(updatedQueue);
+  //     } catch (error) {
+  //       console.error("Error saving chat queue to cache:", error);
+  //     }
+  //   };
+
+  const saveQueueToCache = async (newValue) => {
     try {
-      // Get the existing queue from AsyncStorage
       const existingQueue = await AsyncStorage.getItem("chatQueue");
       const parsedExistingQueue = existingQueue
         ? JSON.parse(existingQueue)
         : [];
 
-      // Combine the newQueue and existingQueue, and filter out duplicates
-      const updatedQueue = [...new Set([...parsedExistingQueue, ...newQueue])];
+      // Combine the new value and existing queue
+      const updatedQueue = [...parsedExistingQueue, newValue];
 
       // Save the updated queue to AsyncStorage
       await AsyncStorage.setItem("chatQueue", JSON.stringify(updatedQueue));
@@ -68,11 +88,31 @@ const usePrevMessages = () => {
 
   // Function to get the whole queue or a limited number of messages (<= 20)
   const getLimitedQueue = () => {
-    return queue.slice(0, 20);
+    const length = queue.length;
+
+    // Handle unexpected scenarios
+    if (length === 0) {
+      console.warn("Queue is empty.");
+      return [];
+    }
+
+    // If the length is less than or equal to 20, return the entire array
+    if (length <= 20) {
+      return [...queue];
+    }
+
+    // If the length is greater than 20, return the last 20 elements
+    const startIndex = length - 20;
+    return queue.slice(startIndex, length);
   };
+
   const deleteChatQueue = async () => {
     try {
       await AsyncStorage.removeItem("chatQueue");
+      const newQueue = await AsyncStorage.getItem("chatQueue");
+      const parsedNewQueue = newQueue ? JSON.parse(newQueue) : [];
+      setQueue(parsedNewQueue);
+      console.log("deleted queue");
     } catch (error) {
       console.error("error during removing queue form cache");
     }
@@ -82,7 +122,7 @@ const usePrevMessages = () => {
   }, []);
   useEffect(() => {
     // deleteChatQueue();
-    console.log(queue);
+    // console.log(queue);
   }, [queue]);
 
   return { queue, saveQueueToCache, getLimitedQueue };
