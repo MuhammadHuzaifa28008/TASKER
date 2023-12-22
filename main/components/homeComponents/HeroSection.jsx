@@ -1,33 +1,57 @@
-import { View, Text } from 'react-native'
-import mainStyles from '../../../styles/mainStyles'
-// import { useFonts } from 'expo-font';
-import { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { View, Text, TouchableHighlight } from 'react-native';
+import * as Font from 'expo-font';
+import mainStyles from '../../../styles/mainStyles';
 
+export default function HeroSection({ navigation }) {
+    const [fontLoaded, setFontLoaded] = useState(false);
 
+    useEffect(() => {
+        const loadFont = async () => {
+            try {
+                await Font.loadAsync({
+                    'logoFont': require('../../../assets/font/Bord.otf'),
+                });
+                setFontLoaded(true);
+            } catch (error) {
+                console.error('Error loading font:', error);
+                setFontLoaded(false);
+            }
+        };
 
-export default function HeroSection() {
+        loadFont();
+    }, []);
 
 
     useEffect(() => {
-
-    }, [])
+    }, [fontLoaded])
 
     return (
+
+
         <View style={[mainStyles.appBar, heroSecBarCustomStyle]}>
             <View style={{ flex: 1 }}>
-                <Text style={[mainStyles.cardTitleText, logoText]}>Tasker</Text>
-                <Text style={[mainStyles.appBarText]}>From student for students</Text>
+
+                <Text style={[fontLoaded && logoText, mainStyles.cardTitleText, { fontWeight: 'normal' }]}>Tasker</Text>
+                <Text style={[mainStyles.appBarText, fontLoaded ? logoText : {}]}>From student for students</Text>
             </View>
-            <View style={[mainStyles.card, appBarCardCustomStyles, { width: '100%' }]}>
-                <Text style={[mainStyles.cardHeader]}>Text from Image</Text>
-                <Text style={[mainStyles.cardHeader]}>GPT-4  Turbo</Text>
-            </View>
+            <TouchableHighlight
+                overlay={'transparent'}
+                onPress={() => navigation.navigate('current')}
+                style={[appBarCardCustomStyles, { maxHeight: '70%', maxWidth: '80%', borderRadius: 10 }]}
+            >
+                <View style={[mainStyles.card, appBarCardCustomStyles]}>
+                    <Text style={[mainStyles.cardHeader]}>Text from Image</Text>
+                    <Text style={[mainStyles.cardHeader]}>GPT-4 Turbo</Text>
+                </View>
+            </TouchableHighlight>
         </View>
-    )
+
+    );
 }
 
 const heroSecBarCustomStyle = {
-    jsutiifyContent: 'space-evenly',
+    justifyContent: 'space-evenly',
     paddingTop: 20,
     paddingBottom: 20,
     height: '45%',
@@ -37,17 +61,15 @@ const heroSecBarCustomStyle = {
     paddingRight: 15,
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,
-}
+};
 
 const appBarCardCustomStyles = {
     height: 'auto',
-    maxHeight: '70%',
+    maxHeight: '100%',
     width: 'auto',
-    maxWidth: '80%'
-
-}
+    maxWidth: '100%',
+};
 
 const logoText = {
-
-    // fontFamily: 'logoFont'
-}
+    fontFamily: 'logoFont',
+};

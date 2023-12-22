@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 
 const ErrorModal = ({ error, onClose, navigate }) => {
   useEffect(() => {
-    console.log(navigate)
+    // console.log(navigate)
   }, [navigate])
   return (
     <Modal

@@ -44,12 +44,13 @@ export default function FeedbackScreen() {
 
         <View style={[mainStyles.card, { marginBottom: 20 }]}>
           <Text style={[mainStyles.cardHeader]}>Suggest Features</Text>
-          <Text style={[mainStyles.cardContent]}>We'd love to hear your suggestions!</Text>
+          <Text style={[mainStyles.cardContent]}>I'd love to hear your suggestions!</Text>
         </View>
 
         <View style={mainStyles.card}>
           <Text style={[mainStyles.cardHeader]}>Report an Issue</Text>
           <Text style={[mainStyles.cardContentText]}>Encountering any issues?</Text>
+          <Text style={[mainStyles.cardContentText]}>Apologies for inconvenience</Text>
           <Text style={[mainStyles.cardContentText]}>Rest assured, it will be fixed in future updates.</Text>
         </View>
 

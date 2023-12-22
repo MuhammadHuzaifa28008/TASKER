@@ -22,7 +22,7 @@ const CaptureImg = ({ setImageUri }) => {
             });
 
             if (result.canceled) {
-                console.log('User cancelled camera');
+                // console.log('User cancelled camera');
                 setIsImgCapturing(false)
             } else if (result.error) {
                 console.log('ImagePicker Error: ', result.error);

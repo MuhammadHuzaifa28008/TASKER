@@ -5,7 +5,7 @@ import DisplayRes from '../../outputComponents/DisplayRes';
 import usePrevMessages from '../../../utils/hooks/usePrevMessages';
 
 
-export default function PRArea({ setChatStatus, promptTxt, responseTxt }) {
+export default function PRArea({ setRetryTxt, setChatStatus, promptTxt, responseTxt }) {
   // const [currentQueue, setCurrentQueue] = useState([]);
   const scrollViewRef = useRef(null);
   const { queue, saveQueueToCache } = usePrevMessages();
@@ -51,7 +51,7 @@ export default function PRArea({ setChatStatus, promptTxt, responseTxt }) {
       >
         {queue.map((item, index) => {
           if (item.role === 'user') {
-            return <DisplayReq key={index} reqData={item.content} />;
+            return <DisplayReq setTxt={setRetryTxt} key={index} reqData={item.content} />;
           }
           if (item.role === 'assistant') {
             return <DisplayRes key={index} resData={item.content} />;

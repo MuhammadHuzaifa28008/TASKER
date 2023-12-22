@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import usePrevMessages from "./usePrevMessages";
+import { version } from "uuid";
 
 const useApiCalls = () => {
   const baseUrl = "https://tasker-server.adaptable.app/"; // Update with your actual base URL
@@ -33,7 +34,10 @@ const useApiCalls = () => {
         prevMessages: prevMessages,
         cancelToken,
         onDownloadProgress: (progressEvent) => {
-          setOngoingReq(source);
+          if (progressEvent) {
+            console.log(`I am hapening... ${new Error().stack.split("\n")[1]}`);
+            setOngoingReq(source);
+          }
         },
         onAbort: () => {
           console.log("request aborted");
@@ -42,10 +46,14 @@ const useApiCalls = () => {
       if (!response) {
         sendPrompt(prompt, prevMessages, source, setOngoingReq);
       } else {
-        console.log(response);
+        // console.log(response);
         return response;
       }
     } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setError("Network Issue");
+        return;
+      }
       // console.error(error);
       if (error.response.status === 400) {
         setError(error.response.data.message);
@@ -85,6 +93,10 @@ const useApiCalls = () => {
       return response;
     } catch (error) {
       // console.error(error);
+      if (axios.isAxiosError(error)) {
+        setError("Network Issue");
+        return;
+      }
       if (error.response.status === 400) {
         setError(error.response.data.message);
         return;
@@ -119,7 +131,7 @@ const useApiCalls = () => {
 
       return response;
     } catch (error) {
-      console.error(error);
+      // console.error(error);
       if (error.response.status >= 500) {
         if (error.response.status === 504)
           setError("it is taking too much time");
@@ -133,7 +145,26 @@ const useApiCalls = () => {
     }
   };
 
-  return { regDevice, sendPrompt, fetchText, sendFeedback, loading, error };
+  const getVersion = async () => {
+    try {
+      const response = await axios.get(`${baseUrl}/version/`);
+      // console.log(response.data);
+      // console.log(response.data.version);
+      if (response) return response.data.version;
+    } catch (error) {
+      // console.error("error getting version" + error);
+    }
+  };
+
+  return {
+    regDevice,
+    sendPrompt,
+    fetchText,
+    sendFeedback,
+    getVersion,
+    loading,
+    error,
+  };
 };
 
 export default useApiCalls;

@@ -16,56 +16,6 @@ const usePrevMessages = () => {
     }
   };
 
-  // Function to save the new queue to AsyncStorage
-  //   const saveQueueToCache = async (newQueue) => {
-  //     try {
-  //       await AsyncStorage.setItem("chatQueue", JSON.stringify(newQueue));
-  //       setQueue(newQueue);
-  //     } catch (error) {
-  //       console.error("Error saving chat queue to cache:", error);
-  //     }
-  //   };
-  //   const saveQueueToCache = async (newQueue) => {
-  //     try {
-  //       // Get the existing queue from AsyncStorage
-  //       const existingQueue = await AsyncStorage.getItem("chatQueue");
-  //       const parsedExistingQueue = existingQueue
-  //         ? JSON.parse(existingQueue)
-  //         : [];
-
-  //       // Append the newQueue to the existingQueue
-  //       const updatedQueue = [...parsedExistingQueue, ...newQueue];
-
-  //       // Save the updated queue to AsyncStorage
-  //       await AsyncStorage.setItem("chatQueue", JSON.stringify(updatedQueue));
-
-  //       // Update the state with the updated queue
-  //       setQueue(updatedQueue);
-  //     } catch (error) {
-  //       console.error("Error saving chat queue to cache:", error);
-  //     }
-  //   };
-  //   const saveQueueToCache = async (newQueue) => {
-  //     try {
-  //       // Get the existing queue from AsyncStorage
-  //       const existingQueue = await AsyncStorage.getItem("chatQueue");
-  //       const parsedExistingQueue = existingQueue
-  //         ? JSON.parse(existingQueue)
-  //         : [];
-
-  //       // Combine the newQueue and existingQueue, and filter out duplicates
-  //       const updatedQueue = [...new Set([...parsedExistingQueue, ...newQueue])];
-
-  //       // Save the updated queue to AsyncStorage
-  //       await AsyncStorage.setItem("chatQueue", JSON.stringify(updatedQueue));
-
-  //       // Update the state with the updated queue
-  //       setQueue(updatedQueue);
-  //     } catch (error) {
-  //       console.error("Error saving chat queue to cache:", error);
-  //     }
-  //   };
-
   const saveQueueToCache = async (newValue) => {
     try {
       const existingQueue = await AsyncStorage.getItem("chatQueue");
@@ -73,16 +23,35 @@ const usePrevMessages = () => {
         ? JSON.parse(existingQueue)
         : [];
 
-      // Combine the new value and existing queue
-      const updatedQueue = [...parsedExistingQueue, newValue];
+      // Check if the newValue is the same as the latest value in the queue
+      const isSameAsLatest =
+        parsedExistingQueue.length > 0 &&
+        JSON.stringify(parsedExistingQueue[parsedExistingQueue.length - 1]) ===
+          JSON.stringify(newValue);
 
-      // Save the updated queue to AsyncStorage
-      await AsyncStorage.setItem("chatQueue", JSON.stringify(updatedQueue));
+      if (!isSameAsLatest) {
+        // Combine the new value and existing queue
+        // console.log(isSameAsLatest)
+        const updatedQueue = [...parsedExistingQueue, newValue];
 
-      // Update the state with the updated queue
-      setQueue(updatedQueue);
+        // Ensure only the last 20 items are stored
+        const maxLength = 20;
+        if (updatedQueue.length > maxLength) {
+          updatedQueue.splice(0, updatedQueue.length - maxLength);
+        }
+
+        // Save the updated queue to AsyncStorage
+        await AsyncStorage.setItem("chatQueue", JSON.stringify(updatedQueue));
+
+        // Update the state with the updated queue (if setQueue is available)
+        if (setQueue) {
+          setQueue(updatedQueue);
+        }
+      }
     } catch (error) {
       console.error("Error saving chat queue to cache:", error);
+      // You can handle errors here, for example, show a notification or log to an error tracking service
+      throw new Error("Failed to save chat queue to cache");
     }
   };
 
@@ -92,7 +61,7 @@ const usePrevMessages = () => {
 
     // Handle unexpected scenarios
     if (length === 0) {
-      console.warn("Queue is empty.");
+      // console.warn("Queue is empty.");
       return [];
     }
 

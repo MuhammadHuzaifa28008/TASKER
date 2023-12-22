@@ -10,7 +10,7 @@ export default function StartChat({ navigation }) {
       style={[TouchableOpacityCustomStyle]}
     >
       <View style={[mainStyles.button, mainStyles.buttonContained, buttnCustomStyle]}>
-        <Text style={[mainStyles.buttonContainedText, textStyle]}>Start Chat</Text>
+        <Text style={[mainStyles.buttonContainedText, textStyle]}>Start Chat </Text>
       </View>
     </TouchableHighlight>
   );

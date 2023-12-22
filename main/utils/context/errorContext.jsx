@@ -10,7 +10,7 @@ export const ErrorProvider = ({ children }) => {
     const [navigate, setNavigate] = useState(false)
     const navigation = useNavigation()
     useEffect(() => {
-        console.log(navigate)
+        // console.log("navigate")
         return () => {
             setNavigate(false)
         }

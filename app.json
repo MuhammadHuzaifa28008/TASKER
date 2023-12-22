@@ -1,36 +1,46 @@
 {
   "expo": {
-    "name": "tasker",
+    "name": "Tasker",
     "slug": "tasker",
     "version": "1.0.0",
     "orientation": "portrait",
-    // "icon": "./assets/icon.png",
+    "icon": "./assets/icons/logo.png",
     "userInterfaceStyle": "light",
     "splash": {
-      // "image": "./assets/splash.png",
+      "image": "./assets/icons/logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "assetBundlePatterns": [
-      "**/*"
+      "**/*",
+      "./assets/font/Bord.otf"
     ],
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
         "NSCameraUsageDescription": "Allow access to camera",
         "NSPhotoLibraryUsageDescription": "Allow access to photo library"
-      }
+      },
+      "bundleIdentifier": "com.sarrast.tasker"
     },
     "android": {
       "adaptiveIcon": {
-        // "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/icons/logo.png",
         "backgroundColor": "#ffffff"
       },
-      "permissions": ["CAMERA_ROLL", "CAMERA"]
+      "permissions": [
+        "CAMERA_ROLL",
+        "CAMERA"
+      ],
+      "package": "com.sarrast.tasker"
     },
     "web": {
-      // "favicon": "./assets/favicon.png"
+      "favicon": "./assets/icons/logo.png"
     },
-    "main": "./main/App.jsx" 
+    "extra": {
+      "eas": {
+        "projectId": "b2f4c288-7411-465d-89c7-70d6ef59d9e8"
+      }
     }
+  }
 }

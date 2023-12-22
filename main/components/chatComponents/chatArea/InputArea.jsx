@@ -9,10 +9,11 @@ import chatScreenStyles from "../../../../styles/screenStyles/chatScreen";
 import TakeText from "../../inputComponents/TakeText";
 import TakeImg from "../../inputComponents/TakeImg";
 import { Feather } from "@expo/vector-icons";
+import { Entypo } from '@expo/vector-icons';
 import { useEffect, useState } from "react";
 
 export default function InputArea(props) {
-    const { takeTxt, takeImg, txtPlaceHolder, setImg, imgTxt, sendTxt, inProg, networkStatus, setActInProg } = props;
+    const { takeTxt, takeImg, txtPlaceHolder, setImg, imgTxt, sendTxt, inProg, networkStatus, setActInProg, ongoingReq, setDiscardReq } = props;
 
     const [data, setData] = useState("");
     const [clearInput, setClearInput] = useState(false)
@@ -32,6 +33,12 @@ export default function InputArea(props) {
         return spaceRegex.test(input);
     }
     const handleSubmit = () => {
+        if (ongoingReq) {
+            console.log('discarding req...');
+            setDiscardReq(true)
+            setActInProg('discarding request');
+            return;
+        }
         if (!data || noTxt(data) || inProg || !networkStatus) {
             // if (inProg) console.error('cannot send it until' + inProg)
             // if (!networkStatus) console.error('connect to internet')
@@ -71,15 +78,15 @@ export default function InputArea(props) {
                     inProgress={inProg}
                     setImg={setImg}
                     networkStatus={networkStatus}
-                    setActInProg = {setActInProg}
+                    setActInProg={setActInProg}
                 />}
             </View>
 
             <TouchableOpacity
                 onPress={handleSubmit}
                 style={[mainStyles.button, mainStyles.buttonContained, touchableOpacityCustomStyle]}>
-                {/* <View style={{ flex: 1, borderWidth: 1, borderColor: 'white' }}> */}
-                <Feather
+
+                {!ongoingReq ? (<Feather
                     name="send"
                     size={24}
                     color={
@@ -87,9 +94,8 @@ export default function InputArea(props) {
                             ? chatScreenStyles.colors.background
                             : chatScreenStyles.colors.secondary
                     }
-                />
+                />) : (<Entypo size={24} color={chatScreenStyles.colors.background} />)}
 
-                {/* </View> */}
             </TouchableOpacity>
 
             {/* </KeyboardAvoidingView> */}

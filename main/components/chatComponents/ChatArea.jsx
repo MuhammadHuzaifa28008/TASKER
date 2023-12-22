@@ -9,7 +9,7 @@ import { useEffect } from "react";
 import { useError } from '../../utils/hooks/useErrorModal.js'
 
 export default function ChatArea({ flex, setChatStatus, networkStatus }) {
-  const { img, req, imgText, setImg, actionInProg, setReq, setActInProg, res, setDiscardReq, ongoingReq, err } =
+  const { img, req, imgText, setDefaultTxt, setImg, actionInProg, setReq, setActInProg, res, setDiscardReq, ongoingReq, err } =
     useChatContext();
   const { showErrorModal } = useError();
 
@@ -33,7 +33,7 @@ export default function ChatArea({ flex, setChatStatus, networkStatus }) {
       ]}
     >
       <View style={[{ flex: 1 }]}>
-        <PRArea setChatStatus={setChatStatus} promptTxt={req} responseTxt={res} />
+        <PRArea setRetryTxt={setDefaultTxt} setChatStatus={setChatStatus} promptTxt={req} responseTxt={res} />
       </View>
 
       {actionInProg && <SandCWrapper actionInProg={actionInProg} discardReq={setDiscardReq} isReqOn={ongoingReq} />}
@@ -49,7 +49,9 @@ export default function ChatArea({ flex, setChatStatus, networkStatus }) {
           sendTxt={setReq}
           inProg={actionInProg}
           networkStatus={networkStatus}
-          setActInProg= {setActInProg}
+          setActInProg={setActInProg}
+          ongoingReq={ongoingReq}
+          setDiscardReq={setDiscardReq}
         />
       </View>
     </View>

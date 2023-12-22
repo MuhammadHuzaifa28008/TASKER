@@ -29,6 +29,7 @@ export function ChatContextProvider({ children }) {
     const [disCardReq, setDiscardReq] = useState(false);
     const [img, setImg] = useState(null);
     const [imgText, setImgText] = useState("");
+    const [defaultTxt, setDefaultTxt] = useState("");
     const [res, setRes] = useState(null);
     const [err, setErr] = useState(null);
     // const [discardImg, setDiscardImg] = useState(false);
@@ -40,10 +41,26 @@ export function ChatContextProvider({ children }) {
         if (apiError) setErr(apiError)
     }, [apiError])
 
+    useEffect(() => {
+        // console.log(' iam triggered')
+        try {
+            if (defaultTxt && !ongoingReq) {
+                // console.log(' iam triggered 2')
+                // setImgText(defaultTxt)
+                setReq(defaultTxt)
+            }
 
+        } finally {
+            setDefaultTxt('')
+            // setImgText('')
+        }
+
+    }, [defaultTxt])
 
     useEffect(() => {
+
         const sendReqToServer = async (req, source) => {
+            if (imgText) setImgText('')
             const prevMessages = getLimitedQueue();
             // console.log('at context')
             // console.log(prevMessages)
@@ -53,12 +70,13 @@ export function ChatContextProvider({ children }) {
                 if (response) {
                     setRes(response.data.aiResponse);
                 } else {
-                    console.log(response)
-                    throw new Error('request failed')
+                    // console.log(response)
+                    throw new Error('Request failed\n Mostly due to slow internet')
                 }
             } catch (error) {
                 // console.error('error occoured :' + error)
-                setErr('Request failed ')
+                // setErr('Request failed ')
+                setErr(error.message)
                 setRes('')
             } finally {
                 setActInProg('');
@@ -81,18 +99,19 @@ export function ChatContextProvider({ children }) {
 
     useEffect(() => {
         const fetchTxt = async (img, source) => {
+            if (imgText) setImgText('')
             try {
                 const response = await fetchText(img, source, setOngoingReq);
                 // console.log(response);
                 if (response) {
                     setImgText(response.data.fetchedTxt);
                 } else {
-                    console.log(response)
-                    throw new Error('request failed')
+                    // console.log(response)
+                    throw new Error('Request Failed!\n Mostly due to slow internet')
                 }
             } catch (error) {
-                console.error('error occoured :' + error)
-
+                // console.error('error occoured :' + error)
+                setErr(error.message)
                 setImgText('')
             } finally {
                 setActInProg('');
@@ -111,10 +130,10 @@ export function ChatContextProvider({ children }) {
 
     useEffect(() => {
         if (disCardReq) {
-            console.log('discard req initiated')
+            // console.log('discard req initiated')
             if (ongoingReq) {
-                console.log('some ongoing req was found')
-                ongoingReq.cancel("request canceled");
+                // console.log('some ongoing req was found')
+                // ongoingReq.cancel("request canceled");
             }
             resetContext();
         }
@@ -124,17 +143,20 @@ export function ChatContextProvider({ children }) {
         let timeoutId;
 
         if (ongoingReq) {
-            // Set a timeout for 15 seconds
+            // console.log('some req ongoing...')
+            // console.log(`Some req ongoing... at ${new Error().stack.split('\n')[1]}`);
+
+            // Set a timeout for 25 seconds
             timeoutId = setTimeout(() => {
                 // After 15 seconds, set discardReq to true
                 if (ongoingReq) {
-                    setErr('req caceled | It was taking too much time');
+                    setErr('Req Canceled \n It was taking too much time');
                     setDiscardReq(true);
                 }
                 else {
                     return;
                 }
-            }, 15000); // 15 seconds in milliseconds
+            }, 25000); // 25 seconds in milliseconds
         } else {
             // If ongoingReq becomes falsy, clear the timeout
             if (timeoutId) {
@@ -163,7 +185,7 @@ export function ChatContextProvider({ children }) {
 
 
     return (
-        <ChatContext.Provider value={{setImgText, setDiscardReq, actionInProg, setActInProg, img, setImg, imgText, req, setReq, res, err, ongoingReq }}>
+        <ChatContext.Provider value={{ setDefaultTxt, setDiscardReq, actionInProg, setActInProg, img, setImg, imgText, req, setReq, res, err, ongoingReq }}>
             {children}
         </ChatContext.Provider>
     );

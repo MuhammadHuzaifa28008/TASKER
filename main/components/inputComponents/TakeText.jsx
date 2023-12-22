@@ -11,16 +11,15 @@ const TakeText = (props) => {
 
 
   // useEffect(() => {
-  //   if (defaultText && !text) {
-  //     setText(defaultText)
-  //     // console.log(defaultText + '| \t  1)-> taketext')
-  //   }
+
+  //   console.log(defaultText + '| \t  1)-> taketext')
+
   // }, [defaultText])
 
   useEffect(() => {
     if (defaultText) {
       // Concatenate defaultText to existing text
-      setText((prevText) => prevText + `___\n${defaultText}\n___`);
+      setText((prevText) => prevText + `\t"${defaultText}"\n`);
     }
   }, [defaultText]);
   useEffect(() => {

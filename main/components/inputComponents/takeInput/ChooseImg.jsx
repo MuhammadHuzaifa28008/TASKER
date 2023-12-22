@@ -17,22 +17,22 @@ const ChooseImg = ({ setImageUri }) => {
 
         try {
             const result = await ImagePicker.launchImageLibraryAsync({
-                mediaTypes: ImagePicker.MediaTypeOptions.All,
+                mediaTypes: ImagePicker.MediaTypeOptions.Images,
                 quality: 0.8,
             });
 
             if (result.canceled) {
-                console.log('User cancelled image picker');
+                // console.log('User cancelled image picker');
                 setIsImagePickerOpen(false)
             } else if (result.error) {
-                console.log('ImagePicker Error: ', result.error);
+                // console.log('ImagePicker Error: ', result.error);
                 setIsImagePickerOpen(false)
             } else {
                 setImageUri(result.assets[0].uri);
                 setIsImagePickerOpen(false)
             }
         } catch (error) {
-            console.error(error)
+            // console.error(error)
             setIsImagePickerOpen(false)
         }
 

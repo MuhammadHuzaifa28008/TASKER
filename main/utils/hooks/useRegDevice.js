@@ -21,14 +21,14 @@ const useRegDevice = () => {
   useEffect(() => {
     const checkDeviceRegistration = async () => {
       try {
-        console.log("Checking device registration...");
+        // console.log("Checking device registration...");
 
         // Check if device is registered in cache
         const storedDeviceId = await AsyncStorage.getItem("deviceId");
 
         if (storedDeviceId) {
           // Device is registered, set state
-          console.log("Device is already registered.");
+          // console.log("Device is already registered.");
           setIsRegistered(true);
           setDeviceId(storedDeviceId);
         } else {
