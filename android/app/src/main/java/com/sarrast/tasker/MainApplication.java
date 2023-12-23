@@ -1,4 +1,4 @@
-package com.tasker;
+package com.sarrast.tasker;
 
 import android.app.Application;
 import android.content.res.Configuration;
