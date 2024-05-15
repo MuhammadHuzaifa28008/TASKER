@@ -1,4 +1,4 @@
-# A fauled project
+# A failed project
 ## Application was build a while ago but i was not optimistic to push it. 
 ## Published time 27 june 2024
 ## play Store Link: https://play.google.com/store/apps/details?id=com.sarrast.tasker
@@ -10,4 +10,4 @@
 ## my real challange was to build the expo codebase.
 ## i resolved most of the build issues that were not on the web, i backtracked a lot of things and it took me about a month to resolve issues.
  ### i don't remember exactly  but one thing that stuck with me is.
-  #### keep your config files under observation when building even android build configs itself (not only expo configs)
+  #### keep your config files under observation when building, Even android(build folder) configs itself (not only expo configs)
