@@ -2,7 +2,7 @@
   "expo": {
     "name": "Tasker",
     "slug": "tasker",
-    "version": "2.0.0",
+    "version": "0.0.0",
     "orientation": "portrait",
     "icon": "./assets/icons/logo.png",
     "userInterfaceStyle": "light",
@@ -24,6 +24,7 @@
       "bundleIdentifier": "com.sarrast.tasker"
     },
     "android": {
+      "versionCode": 2,
       "adaptiveIcon": {
         "foregroundImage": "./assets/icons/logo.png",
         "backgroundColor": "#ffffff"
