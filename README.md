@@ -11,3 +11,5 @@
 ## i resolved most of the build issues that were not on the web, i backtracked a lot of things and it took me about a month to resolve issues.
  ### i don't remember exactly  but one thing that stuck with me is.
   #### keep your config files under observation when building, Even android(build folder) configs itself (not only expo configs)
+
+# Commit messages of Dec might guide you through
