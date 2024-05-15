@@ -1,6 +1,6 @@
 # A failed project
 ## Application was build a while ago but i was not optimistic to push it. 
-## Published time 27 june 2024
+## Published time 27 jan 2024
 ## play Store Link: https://play.google.com/store/apps/details?id=com.sarrast.tasker
 ### I am not paying openAI for model so responses are not coming but ocr is functional and UI is ok i guess...
 ## I might hit back after a while with my learnings from failure
